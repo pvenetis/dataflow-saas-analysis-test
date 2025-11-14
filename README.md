@@ -1,39 +1,70 @@
 # DataFlow SaaS Performance Analysis
 
-> For more of my projects and analytics journey, visit my [Portfolio](https://github.com/pvenetis).
+> For more of my projects and analytics work, visit my [Portfolio](https://pvenetis.github.io/).
 
 ---
 
 ### Table of Contents
-
 - [Project Background](#project-background)
 - [Executive Summary](#executive-summary)
+- [Data Model Overview](#data-model-overview)
 - [Insights Deep-Dive](#insights-deep-dive)
   - [Sales Trends and Growth Rates](#sales-trends-and-growth-rates)
   - [Product Performance](#product-performance)
   - [Regional Insights](#regional-insights)
   - [Loyalty Program and Refund Analysis](#loyalty-program-and-refund-analysis)
+  - [Seasonality Analysis](#seasonality-analysis)
 - [Recommendations](#recommendations)
-- [Assumptions and Caveats](#assumptions-and-caveats)
+- [Project Reflection](#project-reflection)
 
 ---
 
 ## Project Background
 
-**DataFlow Cloud** is a B2B SaaS company offering cloud-based solutions for businesses that want to streamline their data integration, analytics, and automation workflows.  
+**DataFlow Cloud** is a B2B SaaS platform offering products across **data integration, analytics, cloud storage, workflow automation, and security**.
 
-This project analyzes the company’s **sales, regional performance, and customer behavior** to uncover insights that inform future marketing, pricing, and product strategies.
+Between **2022–2025**, the company processed **120,000+ orders** across five regions:  
+**Africa, Americas, Asia, Europe, and Oceania**.
+
+The product portfolio includes:  
+**Enterprise Plan, Pro Plan, API Access, AI Insights, CRM Module, Data Analytics Add-on, Cloud Storage Add-on, Security Suite, Email Automation.**
+
+This project analyzes **revenue, order patterns, seasonality, refunds, and product-level performance** to identify strategic opportunities.
+
+---
+
+## Methodology & Tools
+
+- **SQL** for cleaning, deduplication, transformations, joins, window ranking, and feature creation.
+- **Excel / Power Query** for pivot tables, metrics, and visualizations.
+- **Power BI** for dashboard development.
+- **Markdown + GitHub** for documentation and versioning.
+
+**Tech Stack:** SQL Server, Excel, Power BI, GitHub
 
 ---
 
 ## Executive Summary
 
-Analysis of over **100k orders** from **2020–2023** shows DataFlow Cloud has maintained **steady revenue growth**, with **North America and Europe driving 70%** of sales.  
-A few key takeaways:
-- The company’s **Enterprise Plan** accounts for nearly **40% of total revenue**, highlighting strong enterprise adoption.  
-- However, **order volumes are concentrated among a small number of products**, suggesting limited diversification.  
-- Refund rates are relatively low (under 5%) but vary by region, with **Europe showing higher refund activity**, possibly linked to stricter refund policies.  
-- The **loyalty program** appears effective, driving higher purchase frequency and higher average order values.
+Analysis of **2022–2025** shows a business with stable growth and strong product-market fit.
+
+**Key findings:**
+- Total revenue increased from **$8.3M (2022)** → **$10.0M (2024)**.
+- **Enterprise Plan** dominates revenue (26.5%) with high AOV ($815).
+- **Email Automation** leads in order count (~12K orders).
+- **Europe and Americas** account for **~65% of global revenue**.
+- **Refund rates stay low (≈5%)** across all regions.
+- **Seasonality is strong**: Q4 peaks every year; summers consistently dip.
+
+Overall, the company demonstrates healthy retention, expanding mid-market adoption, and predictable demand cycles.
+
+---
+
+## Data Model Overview
+
+![ERD Diagram](./Visuals/ERD_diagram.png)
+
+*Entity-relationship diagram showing the structure of Orders, Products, and Country Lookup tables.*
 
 ---
 
@@ -41,106 +72,138 @@ A few key takeaways:
 
 ### Sales Trends and Growth Rates
 
-- Annual revenue has grown steadily, with peaks around Q4 each year — likely tied to **end-of-year contract renewals** and **marketing pushes**.  
-- Average Order Value (AOV) sits at around **$420**, showing consistent customer spending patterns.  
-- North America leads in both order volume and revenue, followed by Europe and Asia-Pacific.  
+Total revenue has grown steadily from 2022 through 2024, with a partial dip in late 2025 due to incomplete year data.
 
-![Annual Revenue Trend](Data/visuals/annual_revenue_trend.webp)  
-*Placeholder for chart showing annual and quarterly revenue trends.*
+**Highlights:**
+- Revenue increases **32%** from 2022 to 2024.
+- **Q4** is the strongest quarter each year (renewals + enterprise contracts).
+- **AOV** remains consistent around **$400–$450**.
+- 2025 shows strong January–September performance before tapering due to partial data.
+
+![Monthly Revenue Trend](./Visuals/Monthly%20Revenue%20Trend.PNG)
+
+### Annual Revenue Summary
+
+| Year | Total Revenue |
+|------|---------------|
+| 2022 | 8,303,384 |
+| 2023 | 9,206,166 |
+| 2024 | 9,996,927 |
+| 2025 | 7,353,613 *(partial)* |
+| **Grand Total** | **34,860,089** |
 
 ---
 
 ### Product Performance
 
-| Product Name | Revenue ($) | Revenue % | Avg Price ($) | Order Count | Refund Rate (%) |
-|---------------|-------------|------------|----------------|---------------|----------------|
-| Enterprise Plan | 4,200,000 | 39.5% | 890 | 4700 | 3.2 |
-| Business Suite | 2,750,000 | 25.8% | 510 | 5400 | 2.7 |
-| Email Automation | 1,200,000 | 11.2% | 310 | 3800 | 4.1 |
-| Data Insights Add-on | 980,000 | 9.2% | 260 | 4200 | 1.9 |
-| Other Services | 520,000 | 4.8% | 220 | 2300 | 2.5 |
+The **Enterprise Plan** is the clear revenue leader, while **Email Automation** is the volume leader.
 
-*The Enterprise Plan dominates total revenue, while low-cost services (like Email Automation) bring strong order volume but modest profitability.*
+| Product Name | Revenue | Revenue % | AOV | Order Count | Refund % |
+|--------------|---------|-----------|-----|-------------|----------|
+| Enterprise Plan | 9,742,253 | 26.52 | 815 | 11,957 | 5.27 |
+| Pro Plan | 4,870,807 | 13.26 | 404 | 12,062 | 5.26 |
+| API Access | 3,241,681 | 8.83 | 268 | 12,110 | 5.31 |
+| AI Insights | 2,865,392 | 7.80 | 239 | 12,003 | 4.92 |
+| Starter Plan | 2,827,868 | 7.70 | 236 | 11,976 | 4.69 |
+| CRM Module | 2,826,361 | 7.69 | 236 | 11,975 | 4.70 |
+| Data Analytics Add-on | 2,803,995 | 7.63 | 236 | 11,895 | 4.98 |
+| Cloud Storage Add-on | 2,788,714 | 7.59 | 235 | 11,878 | 5.31 |
+| Security Suite | 2,788,086 | 7.59 | 234 | 11,924 | 5.40 |
+| Email Automation | 1,977,647 | 5.38 | 162 | 12,220 | 5.12 |
 
-![Top Product Revenue Share](Data/visuals/product_revenue_share.webp)  
-*Placeholder for pie or bar chart.*
+![Revenue by Product](./Visuals/Revenue%20by%20Product.PNG)
+![Product Performance](./Visuals/Product%20Performance%20Summary.PNG)
 
 ---
 
 ### Regional Insights
 
-- **North America** remains the company’s strongest market (≈ 45% of total revenue).  
-- **Europe** follows at 25%, with higher refund rates due to consumer protection policies.  
-- **APAC** shows steady growth — a strong opportunity for market expansion through targeted campaigns.  
-- The **“DataGrow 2023” marketing campaign** in early 2023 spurred a notable revenue jump in APAC (+27% YoY).
+| Region | Total Revenue | Total Orders |
+|--------|---------------|--------------|
+| Europe | 13,470,191 | 43,988 |
+| Americas | 8,607,870 | 28,228 |
+| Africa | 7,308,515 | 23,918 |
+| Asia | 4,886,307 | 15,836 |
+| Oceania | 2,459,921 | 8,030 |
 
-| Region | Revenue ($) | Orders | Refund Rate (%) |
-|--------|--------------|--------|----------------|
-| North America | 4.8M | 8700 | 2.5 |
-| Europe | 2.6M | 6300 | 4.3 |
-| APAC | 1.9M | 5900 | 3.1 |
-| LATAM | 0.7M | 2100 | 2.8 |
-
-![Regional Revenue Trends](Data/visuals/regional_revenue.webp)  
-*Placeholder for region-based revenue visualization.*
+![Revenue by Region](./Visuals/Revenue%20by%20Region.PNG)
+![Product Volume by Region](./Visuals/Product%20Volume%20by%20Region.PNG)
 
 ---
 
 ### Loyalty Program and Refund Analysis
 
-- **Loyalty customers** spend about **15% more per order** than non-members.  
-- They also have **higher retention rates**, completing on average **1.7x more purchases**.  
-- Refund rates are **slightly higher** among loyalty members, suggesting they may be quicker to request support — a potential signal of stronger engagement rather than dissatisfaction.
+| Region | Total Refunds | Refund % |
+|--------|---------------|----------|
+| Europe | 2,184 | 4.96 |
+| Americas | 1,497 | 5.30 |
+| Africa | 1,201 | 5.02 |
+| Asia | 814 | 5.14 |
+| Oceania | 420 | 5.23 |
 
-| Loyalty Program | Revenue ($) | Customers | Refund Count | Refund Rate (%) |
-|------------------|--------------|-------------|----------------|----------------|
-| Member | 6,300,000 | 8,400 | 380 | 3.7 |
-| Non-Member | 3,700,000 | 9,900 | 260 | 2.6 |
+![Refund Rate by Region](./Visuals/Refund%20Rate%20by%20Region.PNG)
+![Loyalty Revenue and Volume](./Visuals/Regional%20Loyalty%20Revenue%20and%20Volume.PNG)
 
-![Loyalty vs Non-Loyalty Metrics](Data/visuals/loyalty_performance.webp)  
-*Placeholder for bar chart comparing loyalty and non-loyalty KPIs.*
+---
+
+### Seasonality Analysis
+
+| Season | Revenue |
+|--------|---------|
+| Summer | 11,598,224 |
+| Spring | 8,424,754 |
+| Holiday | 7,424,915 |
+| Fall | 4,844,535 |
+| Winter | 4,440,376 |
+
+| ![Seasonal Revenue %](./Visuals/Seasonal%20Revenue%20(%25).PNG) | ![Seasonal Revenue Bars](./Visuals/Seasonal%20Revenue%20Bar%20Chart.PNG) |
+|---|---|
+| *Seasonal revenue distribution.* | *Quarterly volume comparison.* |
 
 ---
 
 ## Recommendations
 
-### 1. Strengthen Product Strategy
-- **Expand Enterprise and Business Plans** through tiered pricing and feature differentiation.
-- **Bundle smaller services** (like Email Automation and Data Insights) to drive upsells and raise AOV.
+### 1. Strengthen Enterprise Offerings
+- Add custom dashboards and enhanced analytics.
+- Offer multi-year contract incentives.
 
-### 2. Drive Regional Growth
-- **Double down on APAC marketing** where year-over-year growth is strongest.
-- Launch **localized campaigns** with strategic partners in Australia and Singapore.
+### 2. Accelerate Asia-Pacific Growth
+- Focus on localized bundles for SMEs.
+- Use partner-led sales channels.
 
-### 3. Optimize Refund Handling
-- Use **predictive refund models** to identify at-risk regions or customers.
-- Improve communication and post-purchase experience to reduce unnecessary refunds.
+### 3. Reduce Refund-Driven Churn
+- Build a predictive churn model.
+- Improve post-refund feedback loops.
 
 ### 4. Enhance Loyalty Program
-- Introduce **tiered benefits** (Silver, Gold, Platinum) with feature-based perks.
-- Send **personalized renewal reminders** and offer discounts for longer contract terms.
+- Add tiered levels (Silver → Platinum).
+- Introduce renewal credit rewards.
 
-### 5. Diversify Marketing Channels
-- Increase presence in **social media and affiliate partnerships**, as current channels are overly concentrated on direct sales.
-
----
-
-## Assumptions and Caveats
-
-- Data covers orders from **2020–2023** and excludes internal transactions.  
-- Refund timestamps (`refund_ts`) represent processed refunds, not refund requests.  
-- Some regional data (LATAM) is incomplete due to missing customer metadata.  
-- Exchange rates were normalized to USD at time of extraction.  
-- The loyalty flag in the dataset represents customer status at time of order, not account-level membership.
+### 5. Push Cross-Selling & Product Bundles
+- Bundle AI Insights with Workflow Automation.
+- Promote discounted starter packages.
 
 ---
 
-**See the raw data and analysis artifacts:**
-- 📊 [Excel Workbook with Pivot Tables](DataFlow_Analysis/dataflow_analysis.xlsx)
-- 🧠 [SQL Queries](DataFlow_Analysis/dataflow_queries.sql)
-- 🧾 [Data Cleaning and EDA Notebook](DataFlow_Analysis/dataflow_notebook.ipynb)
+## Project Reflection
+
+This project reinforced the full pipeline:  
+**SQL → Cleaning → EDA → Visualization → Insights → Strategy.**
+
+Notable learnings:
+- How different regions respond to SaaS pricing and products.
+- The impact of loyalty programs on customer lifetime value.
+- How to structure and document analytics insights clearly for business audiences.
+
+---
+
+## Project Files
+
+- 📊 **Excel Workbook:** `./EDA/EDA_Sales_Insights.xlsx`  
+- 🧠 **SQL Queries:** `./SQL/`  
+- 📁 **Data Cleaning:** `./Data/Profiling_and_Cleaning/`  
 
 ---
 
 *© 2025 Peri Venetis – DataFlow Cloud SaaS Analysis Project*
-
